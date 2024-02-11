@@ -1,4 +1,6 @@
-﻿namespace LinqTutorial.DataTypes
+﻿using System;
+
+namespace LinqTutorial.DataTypes
 {
     public class Pet
     {

@@ -509,10 +509,46 @@ Then the numbers should be ordered descending. For example, for numbers {1,2,3,4
         }
 ```
 
+```csharp
+        //Refactoring challenge
+        public static IEnumerable<DateTime> OrderByMonth_Refactored(
+            List<DateTime> dates)
+        {
+            return dates.OrderBy(date => date.Month);
+        }
+
+        //do not modify this method
+        public static IEnumerable<DateTime> OrderByMonth(List<DateTime> dates)
+        {
+            dates.Sort((left, right) =>
+            {
+                return left.Month.CompareTo(right.Month);
+            });
+            return dates;
+        }
+```
 
 ## Section 8 (MinMax)
 
-### 
+### 31 MinMax
+
+```csharp
+public class Pet : IComparable<Pet>
+{
+    public int Id { get; }
+    public string Name { get; }
+    public PetType PetType { get; }
+    public float Weight { get; }
+
+    public int CompareTo(Pet Other)
+    {
+        return Weight.CompareTo(other.Weight);
+    }
+}
+
+```
+var minWeight = pets.Min(pet => pet.Weight);
+var minPet = pets.Min();
 
 ## Section 9 (Average)
 
