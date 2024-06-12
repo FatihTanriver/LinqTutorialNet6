@@ -532,7 +532,13 @@ Then the numbers should be ordered descending. For example, for numbers {1,2,3,4
 
 ### 31 MinMax
 
+!!! Be Sure collection is not empty
+
 ```csharp
+
+var minWeight = pets.Min(pet => pet.Weight);
+var minPet = pets.Min(); // must implement IComparable, this will return pet object.
+
 public class Pet : IComparable<Pet>
 {
     public int Id { get; }
@@ -540,31 +546,154 @@ public class Pet : IComparable<Pet>
     public PetType PetType { get; }
     public float Weight { get; }
 
+
+    // !!! we must define our used interfaces methods. Interface Segregation Principle" (ISP)
     public int CompareTo(Pet Other)
     {
         return Weight.CompareTo(other.Weight);
     }
 }
 
+
+//Ex1:
+
+public static int? LengthOfTheShortestWord(IEnumerable<string> words)
+{
+    return words.Any() ? words.Min(word => word.Length) : (int?)null;
+}
+
+
+// !!! MaxBy
+var nameOfOwnerWithMostDogs = owners.MaxBy(owner => owner.Pets.Count(
+
+                pet => pet.PetType == PetType.Dog)).Name;
+
 ```
-var minWeight = pets.Min(pet => pet.Weight);
-var minPet = pets.Min();
+
+
 
 ## Section 9 (Average)
 
-### 
+### 35
+
+??? How to handle emptyCollection
+
+```csharp
+double maxAverageOfMarks = students.Any() ? students.Max(student => student.Marks.Any() ? student.Marks.Average() : 0) : 0;
+```
 
 ## Section 10 (Sum)
 
-### 
+### Exercise
+
+```csharp
+        // Ex1
+       public static int TotalLength(IEnumerable<string> words)
+        {
+            //TODO your code goes here
+            return words.Sum(x => x.Length);
+        }
+
+        // Ex2
+               public static double AverageSum(IEnumerable<IEnumerable<int>> collectionsOfNumbers)
+        {
+            //TODO your code goes here
+            return collectionsOfNumbers.Average(x => x.Sum( y => y));
+        }
+
+        // Refactor
+          public static bool HasAnyStudentSumOfMarksLargerThan100_Refactored(IEnumerable<Student> students)
+        {
+           //TODO your code goes here
+           return students.Any( st => st.Marks.Sum(x => x) > 100);
+        }
+```
+
 
 ## Section 11 (ElementAt)
 
-### 
+### Exercise1
+
+```csharp
+//Ex1: 
+        public static bool IsTheNumberAtIndexTheLargest(IEnumerable<int> numbers, int index)
+        {
+            //TODO your code goes here
+            return  numbers.Count() <= index || index < 0 ? false :  numbers.ElementAt(index) == numbers.Max();
+        }
+
+// Ex2
+// My sol
+public static string FormatPetDataAtIndex(IEnumerable<Pet> pets, int index)
+        {
+            string petName;
+            //TODO your code goes here
+            if (index >= pets.Count() || index < 0){
+                return $"Pet data is missing for index {index}";
+            }
+            else if(pets.ElementAt(index) == null){
+                return $"Pet data is missing for index {index}";
+            }
+   
+            petName = pets.ElementAtOrDefault(index).Name;
+                
+            return $"Pet name: {petName}";
+        }
+
+
+public static string FormatPetDataAtIndex(IEnumerable<Pet> pets, int index){
+    var pet = pets.ElementAtOrDefault(index);
+    return pet == null ? $"Pet data is missing for index {index}" : $"Pet data is missing for index {index}";
+}
+
+```
+
+Refactor
+```csharp
+
+        //TODO implement this method
+        public static bool IsEmptyAtIndex_Refactored(IEnumerable<string> words, int index)
+        {
+            //TODO your code goes here
+            
+            return  index > 0 && index < words.Count() ? string.IsNullOrEmpty(words.ElementAtOrDefault(index)) : true;
+        }
+
+// or 
+string.IsNullOrEmpty(words.ElementAtOrDefault(index)
+```
+
 
 ## Section 12 (First and Last)
 
-### 
+### Exercise1
+
+```csharp
+// it consists of at least two letters
+// it starts with an upper case character
+// all other characters in this word are lower case
+
+// MySol
+       public static string FindFirstNameInTheCollection(IEnumerable<string> words)
+        {
+             //TODO your code goes here
+            return    words.FirstOrDefault( w => w.Length > 1 
+            && char.IsUpper(w[0]) &&  w.Count(char.IsUpper) == 1);
+        }
+
+//Coding Exercise 1
+        public static string FindFirstNameInTheCollection(IEnumerable<string> words)
+        {
+            return words.FirstOrDefault(word =>
+                word.Length > 1 &&
+                char.IsUpper(word.First()) &&
+                word.Count(character => char.IsUpper(character)) == 1);
+        }
+```
+
+
+
+
 ## Section 13 (Single)
 
 ### 
